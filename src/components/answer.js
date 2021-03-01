@@ -1,8 +1,8 @@
 import React from 'react';
-
+import './answer.css'
 class Answer extends React.Component{
   render(){
-    return(<div>{this.props.text}</div>)
+    return(<div className="rep">{this.props.text}</div>)
   }
 }
 

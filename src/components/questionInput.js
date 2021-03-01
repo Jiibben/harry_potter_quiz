@@ -1,10 +1,9 @@
 import React from 'react';
-
+import './questionInput.css'
 class QuestionInput extends React.Component{
   render(){
-    return(<div>
-      <input onChange={this.props.handleChange}type="text"></input>
-    </div>)
+    return(
+      <input onChange={this.props.handleChange}type="text"></input>)
   }
 }
 
