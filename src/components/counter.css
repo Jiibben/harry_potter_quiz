@@ -1,0 +1,13 @@
+.counter{
+    border:1px solid black;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border-radius:3px;
+    padding-left: 10px;
+    padding-right:45px;
+   
+}
+div.counter > * {
+    list-style-type: none;
+    text-align:left;
+}

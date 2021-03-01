@@ -2,7 +2,7 @@
 
 .charQuest{
     display:flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     margin:10px;
@@ -17,7 +17,7 @@ h1 {
     font-size: 4em;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
     .charQuest {
         justify-content: center;
         flex-direction: column;
@@ -40,6 +40,10 @@ h1 {
     text-align: center;
     margin: 20px;
     width:auto;
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 /* background */
 html {
@@ -48,4 +52,8 @@ html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+h3:hover{
+    cursor:pointer;
 }

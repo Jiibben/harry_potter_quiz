@@ -5,6 +5,7 @@ import Question from "./components/question.js";
 import QuestionInput from "./components/questionInput.js";
 import Submit from "./components/submit.js";
 import Next from "./components/next.js";
+import Counter from "./components/counter.js"
 import './App.css'
 
 class App extends React.Component{
@@ -23,10 +24,35 @@ class App extends React.Component{
       answer:"",
       showAnswer:"",
       userInput:"",
-      state:""
+      state:"",
+      counter:{
+        total:10,
+        right:0,
+        wrong:0,
+      }
       };
   }
+  resetCounter = () => {
+    this.setState({counter:{total:10, right:0, wrong:0}});
+    this.setState({state:""})
+  };
+  
+  rightCounter = () => {
+    this.setState({counter:{total:this.state.counter.total, right:this.state.counter.right+1, wrong:this.state.counter.wrong}});
+  }
+  wrongCounter = () => {
+    this.setState({counter:{total:this.state.counter.total, right:this.state.counter.right, wrong:this.state.counter.wrong+1}});
+  };
+
+  checkEnd = () => {
+    if (this.state.counter.total === (this.state.counter.wrong + this.state.counter.right)){
+      alert(`You did a score of ${this.state.counter.right +"/" + this.state.counter.total}`);
+      this.resetCounter();
+    }
+  };
+
   async componentDidMount(){
+    this.resetCounter()
     this.setState({state:""})
     const response = await fetch("https://hp-api.herokuapp.com/api/characters")
     const data = await response.json()
@@ -49,7 +75,12 @@ class App extends React.Component{
       this.setState({answer:char.name.toLowerCase()});
     }
   }
+
   onNext = async () =>{
+    if (this.state.state !=="true"){
+    this.wrongCounter()
+    }
+    this.checkEnd()
     this.setState({state:""})
     const response = await fetch("https://hp-api.herokuapp.com/api/characters")
     const data = await response.json()
@@ -68,7 +99,7 @@ class App extends React.Component{
       this.setState({question:`In which hogwarts house is/was ${char.name} in ?`});
       this.setState({answer:char.house.toLowerCase()});
     }else if (questionKeyword ==="name"){
-      this.setState({question:`What's the name of the character above?`});
+      this.setState({question:`What's the name of this character ?`});
       this.setState({answer:char.name.toLowerCase()});
     };
     this.setState({showAnswer:""})
@@ -78,11 +109,18 @@ class App extends React.Component{
     this.setState({userInput:event.target.value}) 
   }
 
+
+
+  
+
   onSubmit = () =>{
     if (this.state.userInput.toLowerCase() === this.state.answer){
-      this.setState({showAnswer:"you're right"});
+      this.setState({showAnswer:"you're right"})
+      this.rightCounter()
     }else{
       this.setState({showAnswer:`You're wrong the correct answer is ${this.state.answer}`})
+      this.wrongCounter()
+      this.checkEnd()
     }
     this.setState({state:"true"})
   }
@@ -92,6 +130,7 @@ class App extends React.Component{
     <h1>Harry Potter Quiz</h1>
     <div className="charQuest">
       < Character name={this.state.character.name} image={this.state.character.image}/>
+      < Counter total={this.state.counter.total} right={this.state.counter.right} wrong={this.state.counter.wrong} />
       < Question question={this.state.question}/>
     </div>
       <div className="sub">
@@ -103,6 +142,7 @@ class App extends React.Component{
       </div>
       <div className="next">
       < Next  handleClick={this.onNext}/>
+      <h3 onClick={this.resetCounter}>reset</h3>
       </div>
     </div>)
   }
